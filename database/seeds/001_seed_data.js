@@ -1,7 +1,16 @@
 // Swami Fashion - Men's Casual & Regular Fit Seed Script
 // Light Theme, Prices between ₹299 to ₹1300, Kolhapur Atelier Details
 const path = require('path');
-const argon2 = require('argon2');
+let argon2;
+try {
+  argon2 = require('argon2');
+} catch (e1) {
+  try {
+    argon2 = require(path.join(__dirname, '../../backend/node_modules/argon2'));
+  } catch (e2) {
+    argon2 = require(path.resolve(process.cwd(), 'node_modules/argon2'));
+  }
+}
 const pool = require('../../backend/src/config/database');
 
 async function seed() {
