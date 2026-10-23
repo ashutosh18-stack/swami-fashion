@@ -29,15 +29,17 @@ async function seed() {
     const [existingAdmins] = await conn.execute('SELECT id FROM admins WHERE username = ?', [adminUser]);
     if (existingAdmins.length === 0) {
       await conn.execute(
-        `INSERT INTO admins (username, password_hash, pin_hash, full_name, email)
-         VALUES (?, ?, ?, 'Swami Fashion Store Manager', 'contact@swamifashion.com')`,
+        `INSERT INTO admins (username, password_hash, pin_hash, full_name, email, role, is_active)
+         VALUES (?, ?, ?, 'Swami Fashion Store Manager', 'contact@swamifashion.com', 'main_admin', 1)`,
         [adminUser, passwordHash, pinHash]
       );
+      console.log(`✓ Admin user '${adminUser}' created with main_admin privileges.`);
     } else {
       await conn.execute(
-        `UPDATE admins SET password_hash = ?, pin_hash = ? WHERE username = ?`,
+        `UPDATE admins SET password_hash = ?, pin_hash = ?, role = 'main_admin', is_active = 1 WHERE username = ?`,
         [passwordHash, pinHash, adminUser]
       );
+      console.log(`✓ Admin user '${adminUser}' credentials and main_admin privileges refreshed.`);
     }
 
     // Light Theme Website Settings

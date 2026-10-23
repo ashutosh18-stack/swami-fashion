@@ -35,12 +35,30 @@ async function migrate() {
       }
     }
     console.log('✓ Successfully executed all database schema migrations.');
+
+    // Auto-migrate schema updates for existing admins table
+    try {
+      const [cols] = await conn.execute('DESCRIBE admins');
+      const fieldNames = cols.map(c => c.Field);
+      if (!fieldNames.includes('role')) {
+        await conn.execute("ALTER TABLE admins ADD COLUMN role VARCHAR(30) NOT NULL DEFAULT 'main_admin'");
+        console.log('✓ Added role column to admins');
+      }
+      if (!fieldNames.includes('is_active')) {
+        await conn.execute("ALTER TABLE admins ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1");
+        console.log('✓ Added is_active column to admins');
+      }
+      await conn.execute("ALTER TABLE admins MODIFY pin_hash VARCHAR(255) NULL");
+      await conn.execute("UPDATE admins SET role = 'main_admin', is_active = 1 WHERE username = 'swami_admin' OR id = 1");
+      console.log('✓ Admins table verified and updated.');
+    } catch (schemaErr) {
+      console.warn('Admins column check note:', schemaErr.message);
+    }
   } catch (err) {
     console.error('✗ Migration failed:', err.message);
     throw err;
   } finally {
     conn.release();
-    // Do not call process.exit if called from an automated script
   }
 }
 

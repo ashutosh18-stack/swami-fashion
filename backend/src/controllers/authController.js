@@ -31,7 +31,7 @@ async function verifyPassword(req, res) {
 
   try {
     const [rows] = await pool.execute(
-      `SELECT id, username, password_hash, pin_hash, full_name, email, role, is_active FROM admins WHERE username = ?`,
+      `SELECT * FROM admins WHERE username = ?`,
       [username.trim()]
     );
 
@@ -42,6 +42,8 @@ async function verifyPassword(req, res) {
     }
 
     const admin = rows[0];
+    admin.role = admin.role || 'main_admin';
+    admin.is_active = admin.is_active !== undefined ? admin.is_active : 1;
 
     // Check if account has been deactivated
     if (admin.is_active === 0) {
@@ -104,8 +106,8 @@ async function verifyPassword(req, res) {
       }
     });
   } catch (err) {
-    console.error('Verify password error:', err);
-    return res.status(500).json({ success: false, error: 'Internal authentication server error.' });
+    console.error('Verify password error:', err.message || err);
+    return res.status(500).json({ success: false, error: err.message || 'Internal authentication server error.' });
   }
 }
 
