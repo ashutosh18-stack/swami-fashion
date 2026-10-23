@@ -1,0 +1,244 @@
+/* ==========================================================================
+   SWAMI FASHION - LUXURY MEN'S CASUAL & REGULAR FIT
+   Light Theme Design System derived from Royal Medallion Logo
+   ========================================================================== */
+
+:root {
+  /* Brand Tokens (Derived from Swami Fashion Logo) */
+  --brand-primary: #5A2A18;          /* Imperial Cognac Bronze */
+  --brand-primary-light: #7E3E26;
+  --brand-primary-dark: #3E1B0E;
+
+  --brand-secondary: #C5A059;        /* Warm Champagne Gold */
+  --brand-secondary-light: #E8D3A2;
+  --brand-secondary-dark: #9E7D36;
+
+  --brand-accent: #8E163B;           /* Ruby Accent */
+  --brand-accent-glow: rgba(142, 22, 59, 0.25);
+  --brand-secondary-accent: #1B2A4A; /* Midnight Navy Accent */
+
+  /* Light Luxury Theme Surfaces */
+  --brand-background: #FAF8F5;       /* Warm Ivory Silk Base */
+  --brand-surface: #FFFFFF;          /* Crisp Studio Card White */
+  --brand-surface-elevated: #F5EFE8; /* Elevated Panel */
+  --brand-surface-glass: rgba(255, 255, 255, 0.92);
+
+  --brand-text: #241711;             /* Deep Espresso Charcoal */
+  --brand-text-bright: #120A06;      /* High-contrast Noir */
+  --brand-muted: #736155;            /* Refined Warm Taupe */
+  --brand-border: rgba(90, 42, 24, 0.12);
+  --brand-border-hover: rgba(197, 160, 89, 0.6);
+
+  /* Gradients */
+  --gold-gradient: linear-gradient(135deg, #5A2A18 0%, #3E1B0E 100%);
+  --gold-shimmer: linear-gradient(90deg, transparent 0%, rgba(197, 160, 89, 0.15) 50%, transparent 100%);
+  --card-gradient: linear-gradient(180deg, #FFFFFF 0%, #FAF8F5 100%);
+
+  /* Typography */
+  --font-heading: 'Cinzel', serif;
+  --font-heading-decorative: 'Cinzel Decorative', serif;
+  --font-editorial: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-devanagari: 'Rozha One', serif;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 2px 8px rgba(90, 42, 24, 0.06);
+  --shadow-md: 0 8px 24px rgba(90, 42, 24, 0.08);
+  --shadow-lg: 0 16px 40px rgba(90, 42, 24, 0.12);
+  --shadow-gold: 0 4px 20px rgba(197, 160, 89, 0.25);
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--brand-background);
+  color: var(--brand-text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--brand-background);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(90, 42, 24, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-secondary);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--brand-text-bright);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.font-editorial {
+  font-family: var(--font-editorial);
+  font-style: italic;
+}
+
+.font-decorative {
+  font-family: var(--font-heading-decorative);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #5A2A18 0%, #8E163B 50%, #C5A059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Badges */
+.badge-luxury {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 20px;
+  background: rgba(90, 42, 24, 0.06);
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-border);
+}
+
+.badge-ruby {
+  background: rgba(142, 22, 59, 0.08);
+  color: var(--brand-accent);
+  border-color: rgba(142, 22, 59, 0.2);
+}
+
+/* Premium Buttons */
+.btn-luxury-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #FFFFFF !important;
+  background: var(--brand-primary);
+  border: 1px solid var(--brand-primary-dark);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(90, 42, 24, 0.2);
+  text-decoration: none;
+}
+
+.btn-luxury-primary:hover {
+  background: var(--brand-primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(90, 42, 24, 0.3);
+  color: #FFFFFF !important;
+}
+
+.btn-luxury-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 26px;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--brand-primary) !important;
+  background: #FFFFFF;
+  border: 1px solid rgba(90, 42, 24, 0.25);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn-luxury-outline:hover {
+  background: rgba(90, 42, 24, 0.04);
+  border-color: var(--brand-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  color: var(--brand-primary-dark) !important;
+}
+
+/* Cards */
+.luxury-card {
+  background: #FFFFFF;
+  border: 1px solid var(--brand-border);
+  border-radius: 6px;
+  transition: all var(--transition-smooth);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.luxury-card:hover {
+  border-color: var(--brand-border-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+/* Gold Divider */
+.gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 1.25rem 0;
+}
+
+.gold-divider::before,
+.gold-divider::after {
+  content: '';
+  height: 1px;
+  width: 50px;
+  background: linear-gradient(90deg, transparent, var(--brand-secondary));
+}
+
+.gold-divider::after {
+  background: linear-gradient(90deg, var(--brand-secondary), transparent);
+}
+
+.gold-divider-icon {
+  color: var(--brand-secondary);
+  font-size: 0.8rem;
+}
+
+/* Glass panel */
+.glass-panel {
+  background: var(--brand-surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--brand-border);
+}
