@@ -30,9 +30,22 @@ if (connectionUri) {
   };
 }
 
-// Enable SSL if required by cloud provider (e.g. TiDB, Aiven, PlanetScale, Azure)
-if (process.env.DB_SSL === 'true' || process.env.MYSQL_SSL === 'true') {
-  poolConfig.ssl = { rejectUnauthorized: false };
+// Automatically enable TLS/SSL for cloud databases (TiDB Cloud, Aiven, Railway, etc.)
+const hostStr = (poolConfig.host || '').toLowerCase();
+const uriStr = (connectionUri || '').toLowerCase();
+const isLocalhost = hostStr === 'localhost' || hostStr === '127.0.0.1' || uriStr.includes('localhost') || uriStr.includes('127.0.0.1');
+
+if (
+  !isLocalhost ||
+  process.env.DB_SSL === 'true' ||
+  process.env.MYSQL_SSL === 'true' ||
+  hostStr.includes('tidbcloud.com') ||
+  poolConfig.port === 4000
+) {
+  poolConfig.ssl = {
+    minVersion: 'TLSv1.2',
+    rejectUnauthorized: false
+  };
 }
 
 const pool = mysql.createPool(poolConfig);
