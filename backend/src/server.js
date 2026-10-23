@@ -91,12 +91,23 @@ app.use((err, req, res, next) => {
   });
 });
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
   console.log(`====================================================`);
   console.log(`♛ SWAMI FASHION HAUTE COUTURE BACKEND`);
   console.log(`   Running on: http://localhost:${PORT}`);
   console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`====================================================`);
+
+  // Auto-run schema migration & seed on startup if database is available
+  try {
+    const migrate = require('../../database/migrate');
+    const seed = require('../../database/seeds/001_seed_data');
+    await migrate();
+    await seed();
+    console.log('✓ Database auto-bootstrap completed.');
+  } catch (err) {
+    console.warn('⚠️ Database auto-bootstrap deferred (Database not connected yet):', err.message);
+  }
 });
 
 // Graceful Shutdown

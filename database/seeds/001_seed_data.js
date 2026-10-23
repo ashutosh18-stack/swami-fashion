@@ -433,13 +433,17 @@ async function seed() {
   }
 }
 
-seed()
-  .then(() => {
-    console.log('--- Seeding Finished Successfully ---');
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.error('Seeding process failed:', err);
-    process.exit(1);
-  });
+if (require.main === module) {
+  seed()
+    .then(() => {
+      console.log('--- Seeding Finished Successfully ---');
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error('Seeding process failed:', err);
+      process.exit(1);
+    });
+}
+
+module.exports = seed;
 
