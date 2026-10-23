@@ -1,21 +1,12 @@
 // Swami Fashion - Men's Casual & Regular Fit Seed Script
 // Light Theme, Prices between ₹299 to ₹1300, Kolhapur Atelier Details
 const path = require('path');
-const mysql = require(path.join(__dirname, '../../backend/node_modules/mysql2/promise'));
-const argon2 = require(path.join(__dirname, '../../backend/node_modules/argon2'));
-require(path.join(__dirname, '../../backend/node_modules/dotenv')).config({ path: path.join(__dirname, '../../backend/.env') });
-
-const DB_CONFIG = {
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '123456',
-  database: process.env.DB_NAME || 'swami_fashion',
-  port: parseInt(process.env.DB_PORT || '3306')
-};
+const argon2 = require('argon2');
+const pool = require('../../backend/src/config/database');
 
 async function seed() {
-  console.log('Connecting to database:', DB_CONFIG.database);
-  const conn = await mysql.createConnection(DB_CONFIG);
+  console.log('Connecting to database via shared pool...');
+  const conn = await pool.getConnection();
 
   try {
     const adminUser = process.env.ADMIN_INIT_USER || 'swami_admin';
@@ -438,8 +429,17 @@ async function seed() {
     console.error('Error seeding database:', err);
     throw err;
   } finally {
-    await conn.end();
+    if (conn) conn.release();
   }
 }
 
-seed();
+seed()
+  .then(() => {
+    console.log('--- Seeding Finished Successfully ---');
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error('Seeding process failed:', err);
+    process.exit(1);
+  });
+

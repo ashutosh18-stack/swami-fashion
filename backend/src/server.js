@@ -20,8 +20,13 @@ app.use(helmet({
 }));
 
 // CORS Configuration
+const rawOrigins = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean);
+
 const allowedOrigins = [
-  process.env.CLIENT_URL || 'http://localhost:5173',
+  ...rawOrigins,
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000'
@@ -31,7 +36,11 @@ app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+    if (
+      process.env.NODE_ENV !== 'production' ||
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app')
+    ) {
       return callback(null, true);
     }
     return callback(new Error('CORS policy: Not allowed by CORS'));

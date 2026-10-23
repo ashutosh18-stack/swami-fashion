@@ -1,6 +1,12 @@
 // Swami Fashion - Unified API Client
 
-const BASE_URL = ''; // Proxied via Vite to http://localhost:5000 in dev and relative in prod
+const BASE_URL = import.meta.env.VITE_API_URL || '';
+
+export const getImageUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `${BASE_URL}${path}`;
+};
 
 async function request(url, options = {}) {
   const defaultHeaders = {

@@ -83,10 +83,11 @@ async function verifyPassword(req, res) {
 
     // Set secure HTTP-only cookie
     const isProduction = process.env.NODE_ENV === 'production' || process.env.COOKIE_SECURE === 'true';
+    const sameSiteSetting = process.env.COOKIE_SAMESITE || (isProduction ? 'none' : 'lax');
     res.cookie('swami_admin_session', sessionToken, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'lax',
+      sameSite: sameSiteSetting,
       path: '/',
       maxAge: ABSOLUTE_TIMEOUT_SECONDS * 1000
     });
@@ -176,10 +177,11 @@ async function verifyPin(req, res) {
 
     // Set secure HTTP-only cookie
     const isProduction = process.env.NODE_ENV === 'production' || process.env.COOKIE_SECURE === 'true';
+    const sameSiteSetting = process.env.COOKIE_SAMESITE || (isProduction ? 'none' : 'lax');
     res.cookie('swami_admin_session', sessionToken, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: 'lax',
+      sameSite: sameSiteSetting,
       path: '/',
       maxAge: ABSOLUTE_TIMEOUT_SECONDS * 1000
     });
@@ -240,11 +242,25 @@ async function logout(req, res) {
       });
     }
 
-    res.clearCookie('swami_admin_session', { path: '/' });
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.COOKIE_SECURE === 'true';
+    const sameSiteSetting = process.env.COOKIE_SAMESITE || (isProduction ? 'none' : 'lax');
+    res.clearCookie('swami_admin_session', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: sameSiteSetting,
+      path: '/'
+    });
     return res.json({ success: true, message: 'Logged out successfully.' });
   } catch (err) {
     console.error('Logout error:', err);
-    res.clearCookie('swami_admin_session', { path: '/' });
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.COOKIE_SECURE === 'true';
+    const sameSiteSetting = process.env.COOKIE_SAMESITE || (isProduction ? 'none' : 'lax');
+    res.clearCookie('swami_admin_session', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: sameSiteSetting,
+      path: '/'
+    });
     return res.json({ success: true, message: 'Session cleared.' });
   }
 }
